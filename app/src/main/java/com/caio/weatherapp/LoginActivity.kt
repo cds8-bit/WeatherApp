@@ -160,5 +160,22 @@ fun LoginPage(
                 text = "Login"
             )
         }
+        Button(
+            onClick = {
+                activity.startActivity(
+                    Intent(
+                        activity,
+                        RegisterActivity::class.java
+                    ).setFlags(
+                        FLAG_ACTIVITY_SINGLE_TOP
+                    )
+                )
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Registrar"
+            )
+        }
     }
 }
