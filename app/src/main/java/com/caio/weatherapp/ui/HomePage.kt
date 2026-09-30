@@ -1,4 +1,4 @@
-package com.caio.weatherapp.ui.theme
+package com.caio.weatherapp.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
