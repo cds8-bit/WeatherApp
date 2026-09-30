@@ -137,7 +137,7 @@ fun RegisterPage(
                 activity.finish()
             },
             enabled =
-                name.isNotBlank() &&
+                name.isNotEmpty() &&
                         email.isNotEmpty() &&
                         password.isNotEmpty() &&
                         repeatPassword.isNotEmpty() &&
