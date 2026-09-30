@@ -2,6 +2,7 @@ package com.caio.weatherapp
 
 import android.app.Activity
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -9,7 +10,6 @@ import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,7 +45,10 @@ class LoginActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
-                    LoginPage(modifier = Modifier.padding(innerPadding))
+
+                    LoginPage(
+                        modifier = Modifier.padding(innerPadding)
+                    )
                 }
             }
         }
@@ -137,14 +140,14 @@ fun LoginPage(
                     Toast.LENGTH_LONG
                 ).show()
 
-                val intent = Intent(
-                    activity,
-                    MainActivity::class.java
+                activity.startActivity(
+                    Intent(
+                        activity,
+                        MainActivity::class.java
+                    ).setFlags(
+                        FLAG_ACTIVITY_SINGLE_TOP
+                    )
                 )
-
-                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-
-                activity.startActivity(intent)
             },
 
             enabled = email.isNotEmpty() &&

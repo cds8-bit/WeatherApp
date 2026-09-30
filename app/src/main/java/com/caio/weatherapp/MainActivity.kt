@@ -7,29 +7,36 @@ import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.caio.weatherapp.ui.theme.WeatherAppTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
+
         setContent {
-            WeatherAppTheme(){
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+            WeatherAppTheme {
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
+
+                    HomePage(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -39,28 +46,40 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun HomePage(
+    modifier: Modifier = Modifier
+) {
 
-@Composable
-fun TestPage(modifier: Modifier = Modifier) {
     val activity = LocalActivity.current as Activity
 
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(24.dp),
+
+        verticalArrangement = Arrangement.Center,
+
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.size(12.dp))
+
+        Text(
+            text = "Seja bem-vindo(a) à Home!",
+            fontSize = 24.sp
+        )
+
+        Spacer(
+            modifier = Modifier.height(24.dp)
+        )
+
         Button(
             onClick = {
                 activity.finish()
             }
         ) {
-            Text("Sair")
+
+            Text(
+                text = "Sair"
+            )
         }
     }
 }
