@@ -50,13 +50,8 @@ fun ListPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
             .padding(8.dp)
     ) {
         items(cityList, key = { it.name }) { city ->
-            CityItem(city = city, onClose = {
-                Toast.makeText(
-                    activity,
-                    "Fechou!",
-                    Toast.LENGTH_LONG
-                ).show()
-            }, onClick = {
+            CityItem(city = city, onClose = { viewModel.remove(city) }
+            , onClick = {
                 Toast.makeText(
                     activity,
                     "Abriu!",
@@ -71,7 +66,7 @@ fun ListPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 fun CityItem(
     city: City,
     onClick: () -> Unit,
-    onClose: () -> Unit, //onClose = { viewModel.remove(city) }
+    onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
