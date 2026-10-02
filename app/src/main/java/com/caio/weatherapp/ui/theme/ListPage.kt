@@ -31,11 +31,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.caio.weatherapp.model.City
+import com.caio.weatherapp.model.getCities
+import androidx.compose.runtime.toMutableStateList
+import androidx.compose.foundation.lazy.items
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.caio.weatherapp.model.MainViewModel
+import com.caio.weatherapp.ui.nav.MainNavHost
+
 
 
 @Composable
-fun ListPage(modifier: Modifier = Modifier) {
-    val cityList = remember { getCities().toMutableStateList() }
+fun ListPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
+    val cityList = viewModel.cities
     val activity = LocalActivity.current as Activity // Para os Toasts
     LazyColumn(
         modifier = modifier
@@ -64,12 +71,12 @@ fun ListPage(modifier: Modifier = Modifier) {
 fun CityItem(
     city: City,
     onClick: () -> Unit,
-    onClose: () -> Unit,
+    onClose: () -> Unit, //onClose = { viewModel.remove(city) }
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier.fillMaxWidth().padding(8.dp).clickable { onClick() },
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             Icons.Rounded.FavoriteBorder,
