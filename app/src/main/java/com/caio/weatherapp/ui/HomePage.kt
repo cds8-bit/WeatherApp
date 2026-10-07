@@ -1,4 +1,4 @@
-package com.caio.weatherapp.ui.theme
+package com.caio.weatherapp.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -17,14 +17,14 @@ import com.caio.weatherapp.model.MainViewModel
 
 
 @Composable
-fun MapPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
+fun HomePage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
     Column(
         modifier = modifier.fillMaxSize()
-            .background(Color.Gray)
+            .background(Color.Blue)
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
-            text = "Mapa",
+            text = "Home",
             fontWeight = FontWeight.Bold,
             color = Color.White,
             modifier = modifier.align(CenterHorizontally),

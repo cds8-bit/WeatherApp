@@ -6,9 +6,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.caio.weatherapp.model.MainViewModel
-import com.caio.weatherapp.ui.theme.HomePage
-import com.caio.weatherapp.ui.theme.ListPage
-import com.caio.weatherapp.ui.theme.MapPage
+import com.caio.weatherapp.ui.HomePage
+import com.caio.weatherapp.ui.ListPage
+import com.caio.weatherapp.ui.MapPage
 
 @Composable
 fun MainNavHost(navController: NavHostController,

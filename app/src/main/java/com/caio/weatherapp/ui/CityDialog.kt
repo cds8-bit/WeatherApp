@@ -1,5 +1,8 @@
 package com.caio.weatherapp.ui
 
+import android.app.Activity
+import android.widget.Toast
+import androidx.activity.compose.LocalActivity
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Icon
 import androidx.compose.foundation.clickable
@@ -26,6 +29,7 @@ import androidx.compose.ui.window.Dialog
 
 @Composable
 fun CityDialog(onDismiss: () -> Unit, onConfirm: (city: String) -> Unit) {
+    val activity = LocalActivity.current as Activity
     val cityName = remember { mutableStateOf("") }
     Dialog(onDismissRequest = { onDismiss() } ) {
         Surface(shape = RoundedCornerShape(16.dp)) {
@@ -49,7 +53,11 @@ fun CityDialog(onDismiss: () -> Unit, onConfirm: (city: String) -> Unit) {
                     onValueChange = { cityName.value = it })
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
-                    onClick = { onConfirm(cityName.value) },
+                    onClick = { onConfirm(cityName.value); Toast.makeText(
+                        activity,
+                        "Adicionou ${cityName.value}!",
+                        Toast.LENGTH_SHORT
+                    ).show() },
                     modifier = Modifier.fillMaxWidth().height(50.dp)
                 ) { Text(text = "OK") }
             }
