@@ -33,6 +33,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.NavDestination.Companion.hasRoute
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 class MainActivity : ComponentActivity() {
 
@@ -63,7 +65,8 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             title = { Text("Bem-vindo/a!") },
                             actions = {
-                                IconButton( onClick = { finish() } ) {
+                                IconButton( onClick = { Firebase.auth.signOut()
+                                    finish() } ) {
                                     Icon(
                                         imageVector =
                                             Icons.AutoMirrored.Filled.ExitToApp,
