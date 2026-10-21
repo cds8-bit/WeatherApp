@@ -7,9 +7,9 @@ data class City (
     val weather: String? = null,
     val location: LatLng? = null
 )
-
+/*
 private fun getCities() = List(20) { i ->
     City(name = "Cidade $i", weather = "Carregando clima...")
 }
 
-fun getCities(dummy: Unit = Unit): List<City> = getCities()
+fun getCities(dummy: Unit = Unit): List<City> = getCities()*/

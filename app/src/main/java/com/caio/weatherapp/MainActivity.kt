@@ -31,8 +31,11 @@ import com.caio.weatherapp.ui.nav.MainNavHost
 import com.caio.weatherapp.ui.theme.WeatherAppTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.NavDestination.Companion.hasRoute
+import com.caio.weatherapp.db.fb.FBDatabase
+import com.caio.weatherapp.model.MainViewModelFactory
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
@@ -45,7 +48,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val viewModel : MainViewModel by viewModels()
+            val fbDB = remember { FBDatabase() }
+            val viewModel : MainViewModel = viewModel(
+                factory = MainViewModelFactory(fbDB)
+            )
             val navController = rememberNavController()
             var showDialog by remember { mutableStateOf(false) }
             val currentRoute = navController.currentBackStackEntryAsState()
@@ -63,7 +69,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         TopAppBar(
-                            title = { Text("Bem-vindo/a ${viewModel.user?:"Convidado"}!") },
+                            title = { Text("Bem-vindo/a ${viewModel.user?.name ?: "Convidado"}!") },
                             actions = {
                                 IconButton( onClick = { Firebase.auth.signOut()
                                      } ) {
