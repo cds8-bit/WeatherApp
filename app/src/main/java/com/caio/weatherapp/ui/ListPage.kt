@@ -37,7 +37,7 @@ fun ListPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        items(cityList, key = { it.name }) { city ->
+        items(cityList, key = { it.name ?: it.hashCode().toString() }) { city ->
             CityItem(city = city, onClose = { viewModel.remove(city);
                 Toast.makeText(
                 activity,
@@ -73,7 +73,7 @@ fun CityItem(
         Spacer(modifier = Modifier.size(12.dp))
         Column(modifier = modifier.weight(1f)) {
             Text(modifier = Modifier,
-                text = city.name,
+                text = city.name ?:"",
                 fontSize = 24.sp)
             Text(modifier = Modifier,
                 text = city.weather?:"Carregando clima...",
