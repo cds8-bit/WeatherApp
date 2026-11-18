@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.rounded.FavoriteBorder
@@ -24,33 +25,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.caio.weatherapp.model.City
-import androidx.compose.foundation.lazy.items
-import com.caio.weatherapp.ui.MainViewModel
-
+import com.caio.weatherapp.model.Weather
 
 @Composable
-fun ListPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
+fun ListPage(
+    modifier: Modifier = Modifier,
+    viewModel: MainViewModel
+) {
     val cityList = viewModel.cities
-    val activity = LocalActivity.current as Activity // Para os Toasts
+    val activity = LocalActivity.current as Activity
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        items(cityList, key = { it.name ?: it.hashCode().toString() }) { city ->
-            CityItem(city = city, onClose = { viewModel.remove(city);
-                Toast.makeText(
-                activity,
-                "Fechou ${city.name}!",
-                Toast.LENGTH_SHORT
-                ).show()}
-            , onClick = {
-                Toast.makeText(
-                    activity,
-                    "Abriu ${city.name}!",
-                    Toast.LENGTH_SHORT
-                ).show()
-            })
+        items(
+            items = cityList,
+            key = { it.name ?: it.hashCode().toString() }
+        ) { city ->
+
+            CityItem(
+                city = city,
+                weather = viewModel.weather(city.name),
+                onClose = {
+                    viewModel.remove(city)
+
+                    Toast.makeText(
+                        activity,
+                        "Fechou ${city.name}!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
+                onClick = {
+                    Toast.makeText(
+                        activity,
+                        "Abriu ${city.name}!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            )
         }
     }
 }
@@ -58,29 +72,52 @@ fun ListPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 @Composable
 fun CityItem(
     city: City,
+    weather: Weather,
     onClick: () -> Unit,
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val desc = if (weather == Weather.LOADING) {
+        "Carregando clima..."
+    } else {
+        weather.desc
+    }
+
     Row(
-        modifier = modifier.fillMaxWidth().padding(8.dp).clickable { onClick() },
-        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable { onClick() },
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             Icons.Rounded.FavoriteBorder,
             contentDescription = ""
         )
+
         Spacer(modifier = Modifier.size(12.dp))
-        Column(modifier = modifier.weight(1f)) {
-            Text(modifier = Modifier,
-                text = city.name ?:"",
-                fontSize = 24.sp)
-            Text(modifier = Modifier,
-                text = city.weather?:"Carregando clima...",
-                fontSize = 16.sp)
+
+        Column(
+            modifier = modifier.weight(1f)
+        ) {
+            Text(
+                modifier = Modifier,
+                text = city.name,
+                fontSize = 24.sp
+            )
+
+            Text(
+                modifier = Modifier,
+                text = desc,
+                fontSize = 16.sp
+            )
         }
+
         IconButton(onClick = onClose) {
-            Icon(Icons.Filled.Close, contentDescription = "Close")
+            Icon(
+                Icons.Filled.Close,
+                contentDescription = "Close"
+            )
         }
     }
 }
