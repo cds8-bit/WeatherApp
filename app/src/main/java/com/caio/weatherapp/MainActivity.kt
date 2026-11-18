@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.NavDestination.Companion.hasRoute
+import com.caio.weatherapp.api.WeatherService
 import com.caio.weatherapp.db.fb.FBDatabase
 import com.caio.weatherapp.model.MainViewModelFactory
 import com.google.firebase.Firebase
@@ -49,8 +50,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val fbDB = remember { FBDatabase() }
+            val weatherService = remember { WeatherService() }
             val viewModel : MainViewModel = viewModel(
-                factory = MainViewModelFactory(fbDB)
+                factory = MainViewModelFactory(fbDB, weatherService)
             )
             val navController = rememberNavController()
             var showDialog by remember { mutableStateOf(false) }
@@ -62,7 +64,7 @@ class MainActivity : ComponentActivity() {
                 if (showDialog) CityDialog(
                     onDismiss = { showDialog = false },
                     onConfirm = { city ->
-                        if (city.isNotBlank()) viewModel.add(city)
+                        if (city.isNotBlank()) viewModel.addCity(city)
                         showDialog = false
                     })
 

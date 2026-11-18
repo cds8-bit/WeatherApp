@@ -40,11 +40,11 @@ fun MapPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
     }
 
-    GoogleMap(modifier = modifier.fillMaxSize(), onMapClick = {
-        val lat = "%.2f".format(it.latitude)
-        val lng = "%.2f".format(it.longitude)
-        viewModel.add("Cidade@$lat:$lng", location = it)
-    }, cameraPositionState = camPosState,properties = MapProperties(isMyLocationEnabled = hasLocationPermission), uiSettings = MapUiSettings(
+    GoogleMap(modifier = modifier.fillMaxSize(),
+        onMapClick = {
+            viewModel.addCity(it)
+        },
+     cameraPositionState = camPosState,properties = MapProperties(isMyLocationEnabled = hasLocationPermission), uiSettings = MapUiSettings(
         myLocationButtonEnabled = true
     )
     ) {
