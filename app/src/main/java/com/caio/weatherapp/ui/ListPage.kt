@@ -42,7 +42,7 @@ fun ListPage(
     ) {
         items(
             items = cityList,
-            key = { it.name ?: it.hashCode().toString() }
+            key = { it.name }
         ) { city ->
 
             CityItem(
@@ -58,6 +58,8 @@ fun ListPage(
                     ).show()
                 },
                 onClick = {
+                    viewModel.city = city.name
+
                     Toast.makeText(
                         activity,
                         "Abriu ${city.name}!",

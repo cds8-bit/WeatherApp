@@ -6,12 +6,14 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import com.caio.weatherapp.api.WeatherService
+import com.caio.weatherapp.api.toForecast
 import com.caio.weatherapp.api.toWeather
 import com.caio.weatherapp.db.fb.FBCity
 import com.caio.weatherapp.db.fb.FBDatabase
 import com.caio.weatherapp.db.fb.FBUser
 import com.caio.weatherapp.db.fb.toFBCity
 import com.caio.weatherapp.model.City
+import com.caio.weatherapp.model.Forecast
 import com.caio.weatherapp.model.User
 import com.caio.weatherapp.model.Weather
 import com.google.android.gms.maps.model.LatLng
@@ -33,6 +35,16 @@ class MainViewModel(
     }
 
     private val _weather = mutableStateMapOf<String, Weather>()
+
+    private val _forecast = mutableStateMapOf<String, List<Forecast>?>()
+
+    private var _city = mutableStateOf<String?>(null)
+
+    var city: String?
+        get() = _city.value
+        set(tmp) {
+            _city.value = tmp
+        }
 
     init {
         db.setListener(this)
@@ -111,6 +123,19 @@ class MainViewModel(
         service.getWeather(name) { apiWeather ->
             apiWeather?.let {
                 _weather[name] = it.toWeather()
+            }
+        }
+    }
+
+    fun forecast(name: String) = _forecast.getOrPut(name) {
+        loadForecast(name)
+        emptyList()
+    }
+
+    private fun loadForecast(name: String) {
+        service.getForecast(name) { apiForecast ->
+            apiForecast?.let {
+                _forecast[name] = it.toForecast()
             }
         }
     }
