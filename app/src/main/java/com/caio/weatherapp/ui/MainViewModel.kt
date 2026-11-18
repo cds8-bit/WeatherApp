@@ -16,6 +16,7 @@ import com.caio.weatherapp.model.City
 import com.caio.weatherapp.model.Forecast
 import com.caio.weatherapp.model.User
 import com.caio.weatherapp.model.Weather
+import com.caio.weatherapp.ui.nav.Route
 import com.google.android.gms.maps.model.LatLng
 
 class MainViewModel(
@@ -36,14 +37,22 @@ class MainViewModel(
 
     private val _weather = mutableStateMapOf<String, Weather>()
 
-    private val _forecast = mutableStateMapOf<String, List<Forecast>?>()
+    private val _forecast = mutableStateMapOf<String, List<Forecast>>()
 
-    private var _city = mutableStateOf<String?>(null)
+    private val _city = mutableStateOf<String?>(null)
 
     var city: String?
         get() = _city.value
-        set(tmp) {
-            _city.value = tmp
+        set(value) {
+            _city.value = value
+        }
+
+    private val _page = mutableStateOf<Route>(Route.Home)
+
+    var page: Route
+        get() = _page.value
+        set(value) {
+            _page.value = value
         }
 
     init {
@@ -64,7 +73,10 @@ class MainViewModel(
     }
 
     fun addCity(location: LatLng) {
-        service.getName(location.latitude, location.longitude) { name ->
+        service.getName(
+            location.latitude,
+            location.longitude
+        ) { name ->
             if (name != null) {
                 db.add(
                     City(
@@ -77,12 +89,12 @@ class MainViewModel(
     }
 
     fun add(name: String, location: LatLng? = null) {
-        val city = City(
+        val newCity = City(
             name = name,
             location = location
         )
 
-        db.add(city.toFBCity())
+        db.add(newCity.toFBCity())
     }
 
     fun remove(city: City) {
@@ -99,24 +111,28 @@ class MainViewModel(
     }
 
     override fun onCityAdded(city: FBCity) {
-        _cities[city.name!!] = city.toCity()
-    }
-
-    override fun onCityUpdated(city: FBCity) {
-        val name = city.name!!
-        _cities.remove(name)
-        _cities[name] = city.toCity()
-    }
-
-    override fun onCityRemoved(city: FBCity) {
-        city.name?.let {
-            _cities.remove(it)
+        city.name?.let { name ->
+            _cities[name] = city.toCity()
         }
     }
 
-    fun weather(name: String) = _weather.getOrPut(name) {
-        loadWeather(name)
-        Weather.LOADING
+    override fun onCityUpdated(city: FBCity) {
+        city.name?.let { name ->
+            _cities[name] = city.toCity()
+        }
+    }
+
+    override fun onCityRemoved(city: FBCity) {
+        city.name?.let { name ->
+            _cities.remove(name)
+        }
+    }
+
+    fun weather(name: String): Weather {
+        return _weather.getOrPut(name) {
+            loadWeather(name)
+            Weather.LOADING
+        }
     }
 
     private fun loadWeather(name: String) {
@@ -127,9 +143,11 @@ class MainViewModel(
         }
     }
 
-    fun forecast(name: String) = _forecast.getOrPut(name) {
-        loadForecast(name)
-        emptyList()
+    fun forecast(name: String): List<Forecast> {
+        return _forecast.getOrPut(name) {
+            loadForecast(name)
+            emptyList()
+        }
     }
 
     private fun loadForecast(name: String) {

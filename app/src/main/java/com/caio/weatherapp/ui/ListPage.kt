@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.caio.weatherapp.model.City
 import com.caio.weatherapp.model.Weather
 
+
 @Composable
 fun ListPage(
     modifier: Modifier = Modifier,
@@ -59,12 +60,7 @@ fun ListPage(
                 },
                 onClick = {
                     viewModel.city = city.name
-
-                    Toast.makeText(
-                        activity,
-                        "Abriu ${city.name}!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    viewModel.page = Route.Home
                 }
             )
         }
@@ -103,13 +99,11 @@ fun CityItem(
             modifier = modifier.weight(1f)
         ) {
             Text(
-                modifier = Modifier,
                 text = city.name,
                 fontSize = 24.sp
             )
 
             Text(
-                modifier = Modifier,
                 text = desc,
                 fontSize = 16.sp
             )
