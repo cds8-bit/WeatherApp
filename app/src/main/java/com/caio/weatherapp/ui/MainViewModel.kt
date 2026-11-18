@@ -1,15 +1,15 @@
-
-package com.caio.weatherapp.model
+package com.caio.weatherapp.ui
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.caio.weatherapp.api.WeatherService
 import com.caio.weatherapp.db.fb.FBCity
 import com.caio.weatherapp.db.fb.FBDatabase
 import com.caio.weatherapp.db.fb.FBUser
 import com.caio.weatherapp.db.fb.toFBCity
+import com.caio.weatherapp.model.City
+import com.caio.weatherapp.model.User
 import com.google.android.gms.maps.model.LatLng
 
 class MainViewModel (private val db: FBDatabase,
@@ -32,7 +32,7 @@ class MainViewModel (private val db: FBDatabase,
     fun addCity(name: String) {
         service.getLocation(name) { lat, lng ->
             if (lat != null && lng != null) {
-                db.add(City(name=name, location=LatLng(lat, lng)).toFBCity())
+                db.add(City(name = name, location = LatLng(lat, lng)).toFBCity())
             }
         }
     }

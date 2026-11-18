@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.caio.weatherapp.model.City
 import androidx.compose.foundation.lazy.items
-import com.caio.weatherapp.model.MainViewModel
+import com.caio.weatherapp.ui.MainViewModel
 
 
 @Composable

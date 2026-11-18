@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.caio.weatherapp.model.MainViewModel
+import com.caio.weatherapp.ui.MainViewModel
 import com.caio.weatherapp.ui.HomePage
 import com.caio.weatherapp.ui.ListPage
 import com.caio.weatherapp.ui.MapPage
