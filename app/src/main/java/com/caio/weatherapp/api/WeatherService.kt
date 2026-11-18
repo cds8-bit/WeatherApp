@@ -20,7 +20,15 @@ class WeatherService {
             list?.forEach { onResponse(it.name) }
         }
     }
-    
+
+    fun getLocation(name: String, onResponse: (lat: Double?, long: Double?) -> Unit)
+    {
+        search(name) { list ->
+            list?.forEach {
+                onResponse(it.lat, it.lon)
+            }
+        }
+    }
 
     fun search(query: String, onResponse : (List<APILocation>?) -> Unit) {
         val call: Call<List<APILocation>?> = weatherAPI.search(query)
