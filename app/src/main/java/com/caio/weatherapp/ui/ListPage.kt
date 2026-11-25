@@ -59,6 +59,7 @@ fun ListPage(
                 },
                 onClick = {
                     viewModel.city = city.name
+                    viewModel.page = Route.Home
 
                     Toast.makeText(
                         activity,

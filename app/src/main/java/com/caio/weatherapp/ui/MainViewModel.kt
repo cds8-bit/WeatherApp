@@ -1,5 +1,6 @@
 package com.caio.weatherapp.ui
 
+import Route
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.derivedStateOf
@@ -23,6 +24,10 @@ class MainViewModel(
     private val service: WeatherService
 ) : ViewModel(), FBDatabase.Listener {
 
+    var _page = mutableStateOf<Route>(Route.Home)
+    var page: Route
+        get() = _page.value
+        set(tmp) { _page.value = tmp }
     private val _user = mutableStateOf<User?>(null)
 
     val user: User?
