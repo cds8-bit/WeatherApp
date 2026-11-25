@@ -25,9 +25,13 @@ class MainViewModel(
 ) : ViewModel(), FBDatabase.Listener {
 
     var _page = mutableStateOf<Route>(Route.Home)
+
     var page: Route
         get() = _page.value
-        set(tmp) { _page.value = tmp }
+        set(tmp) {
+            _page.value = tmp
+        }
+
     private val _user = mutableStateOf<User?>(null)
 
     val user: User?
@@ -128,6 +132,15 @@ class MainViewModel(
         service.getWeather(name) { apiWeather ->
             apiWeather?.let {
                 _weather[name] = it.toWeather()
+                loadBitmap(name)
+            }
+        }
+    }
+
+    private fun loadBitmap(name: String) {
+        _weather[name]?.let { weather ->
+            service.getBitmap(weather.imgUrl) { bitmap ->
+                _weather[name] = weather.copy(bitmap = bitmap)
             }
         }
     }

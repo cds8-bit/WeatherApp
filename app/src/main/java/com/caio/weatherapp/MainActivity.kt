@@ -52,13 +52,18 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val fbDB = remember { FBDatabase() }
-            val weatherService = remember { WeatherService() }
+
+            val weatherService = remember {
+                WeatherService(this@MainActivity)
+            }
 
             val viewModel: MainViewModel = viewModel(
                 factory = MainViewModelFactory(fbDB, weatherService)
             )
 
-            val cityDialogService = remember { WeatherService() }
+            val cityDialogService = remember {
+                WeatherService(this@MainActivity)
+            }
 
             val cityDialogViewModel: CityDialogViewModel = viewModel(
                 factory = CityDialogViewModelFactory(cityDialogService)
@@ -124,18 +129,24 @@ class MainActivity : ComponentActivity() {
                                     showDialog = true
                                 }
                             ) {
-                                Icon(Icons.Default.Add, contentDescription = "Adicionar")
+                                Icon(
+                                    Icons.Default.Add,
+                                    contentDescription = "Adicionar"
+                                )
                             }
                         }
                     }
                 ) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
                         launcher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
-                        MainNavHost(navController = navController, viewModel = viewModel)
+                        MainNavHost(
+                            navController = navController,
+                            viewModel = viewModel
+                        )
                     }
+
                     LaunchedEffect(viewModel.page) {
                         navController.navigate(viewModel.page) {
-                            // Volta pilha de navegação até HomePage (startDest).
                             navController.graph.startDestinationRoute?.let {
                                 popUpTo(it) {
                                     saveState = true

@@ -1,6 +1,7 @@
 package com.caio.weatherapp.ui
 
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,7 +11,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import com.caio.weatherapp.R
 import com.caio.weatherapp.model.Weather
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
@@ -55,6 +59,21 @@ fun MapPage(
                 if (location != null) {
                     val weather = viewModel.weather(city.name)
 
+                    val image = weather.bitmap
+                        ?: ContextCompat.getDrawable(
+                            context,
+                            R.drawable.loading
+                        )!!.toBitmap()
+
+                    val icon = BitmapDescriptorFactory.fromBitmap(
+                        Bitmap.createScaledBitmap(
+                            image,
+                            120,
+                            120,
+                            false
+                        )
+                    )
+
                     val desc = if (weather == Weather.LOADING) {
                         "Carregando clima..."
                     } else {
@@ -67,6 +86,7 @@ fun MapPage(
 
                     Marker(
                         state = marker,
+                        icon = icon,
                         title = city.name,
                         snippet = desc
                     )
